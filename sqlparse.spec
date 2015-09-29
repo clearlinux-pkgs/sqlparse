@@ -4,7 +4,7 @@
 #
 Name     : sqlparse
 Version  : 0.1.16
-Release  : 12
+Release  : 13
 URL      : https://pypi.python.org/packages/source/s/sqlparse/sqlparse-0.1.16.tar.gz
 Source0  : https://pypi.python.org/packages/source/s/sqlparse/sqlparse-0.1.16.tar.gz
 Summary  : Non-validating SQL parser
