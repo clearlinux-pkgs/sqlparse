@@ -1,5 +1,5 @@
 PKG_NAME := sqlparse
-URL := https://pypi.python.org/packages/source/s/sqlparse/sqlparse-0.1.19.tar.gz
+URL := http://pypi.debian.net/sqlparse/sqlparse-0.2.1.tar.gz
 ARCHIVES :=
 
 include ../common/Makefile.common
