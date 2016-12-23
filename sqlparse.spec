@@ -4,7 +4,7 @@
 #
 Name     : sqlparse
 Version  : 0.2.2
-Release  : 22
+Release  : 23
 URL      : http://pypi.debian.net/sqlparse/sqlparse-0.2.2.tar.gz
 Source0  : http://pypi.debian.net/sqlparse/sqlparse-0.2.2.tar.gz
 Summary  : Non-validating SQL parser
