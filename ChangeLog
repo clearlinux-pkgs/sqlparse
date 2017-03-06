@@ -1,3 +1,22 @@
+Release 0.2.3 (Mar 02, 2017)
+----------------------------
+
+Enhancements
+
+* New command line option "--encoding" (by twang2218, pr317).
+* Support CONCURRENTLY keyword (issue322, by rowanseymour).
+
+Bug Fixes
+
+* Fix some edge-cases when parsing invalid SQL statements.
+* Fix indentation of LIMIT (by romainr, issue320).
+* Fix parsing of INTO keyword (issue324).
+
+Internal Changes
+
+* Several improvements regarding encodings.
+
+
 Release 0.2.2 (Oct 22, 2016)
 ----------------------------
 
