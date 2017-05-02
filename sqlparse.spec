@@ -6,7 +6,7 @@
 #
 Name     : sqlparse
 Version  : 0.2.3
-Release  : 27
+Release  : 28
 URL      : http://pypi.debian.net/sqlparse/sqlparse-0.2.3.tar.gz
 Source0  : http://pypi.debian.net/sqlparse/sqlparse-0.2.3.tar.gz
 Source99 : http://pypi.debian.net/sqlparse/sqlparse-0.2.3.tar.gz.asc
