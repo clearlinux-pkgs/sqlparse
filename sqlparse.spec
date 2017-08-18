@@ -6,7 +6,7 @@
 #
 Name     : sqlparse
 Version  : 0.2.3
-Release  : 28
+Release  : 29
 URL      : http://pypi.debian.net/sqlparse/sqlparse-0.2.3.tar.gz
 Source0  : http://pypi.debian.net/sqlparse/sqlparse-0.2.3.tar.gz
 Source99 : http://pypi.debian.net/sqlparse/sqlparse-0.2.3.tar.gz.asc
@@ -22,9 +22,8 @@ BuildRequires : python3-dev
 BuildRequires : setuptools
 
 %description
-python-sqlparse - Parse SQL statements
-======================================
-sqlparse is a non-validating SQL parser module for Python.
+``sqlparse`` is a non-validating SQL parser module.
+        It provides support for parsing, splitting and formatting SQL statements.
 
 %package bin
 Summary: bin components for the sqlparse package.
@@ -46,8 +45,11 @@ python components for the sqlparse package.
 %setup -q -n sqlparse-0.2.3
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1488815695
+export SOURCE_DATE_EPOCH=1503081147
 python2 setup.py build -b py2
 python3 setup.py build -b py3
 
@@ -57,10 +59,13 @@ export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 py.test-2.7 || :
 %install
-export SOURCE_DATE_EPOCH=1488815695
+export SOURCE_DATE_EPOCH=1503081147
 rm -rf %{buildroot}
 python2 -tt setup.py build -b py2 install --root=%{buildroot} --force
 python3 -tt setup.py build -b py3 install --root=%{buildroot} --force
+echo ----[ mark ]----
+cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
+echo ----[ mark ]----
 
 %files
 %defattr(-,root,root,-)
@@ -71,4 +76,5 @@ python3 -tt setup.py build -b py3 install --root=%{buildroot} --force
 
 %files python
 %defattr(-,root,root,-)
-/usr/lib/python*/*
+/usr/lib/python2*/*
+/usr/lib/python3*/*
