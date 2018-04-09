@@ -6,7 +6,7 @@
 #
 Name     : sqlparse
 Version  : 0.2.4
-Release  : 36
+Release  : 37
 URL      : http://pypi.debian.net/sqlparse/sqlparse-0.2.4.tar.gz
 Source0  : http://pypi.debian.net/sqlparse/sqlparse-0.2.4.tar.gz
 Source99 : http://pypi.debian.net/sqlparse/sqlparse-0.2.4.tar.gz.asc
@@ -14,7 +14,6 @@ Summary  : Non-validating SQL parser
 Group    : Development/Tools
 License  : BSD-3-Clause
 Requires: sqlparse-bin
-Requires: sqlparse-legacypython
 Requires: sqlparse-python3
 Requires: sqlparse-python
 BuildRequires : pbr
@@ -35,19 +34,9 @@ Group: Binaries
 bin components for the sqlparse package.
 
 
-%package legacypython
-Summary: legacypython components for the sqlparse package.
-Group: Default
-Requires: python-core
-
-%description legacypython
-legacypython components for the sqlparse package.
-
-
 %package python
 Summary: python components for the sqlparse package.
 Group: Default
-Requires: sqlparse-legacypython
 Requires: sqlparse-python3
 
 %description python
@@ -71,8 +60,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1507179684
-python2 setup.py build -b py2
+export SOURCE_DATE_EPOCH=1523308424
 python3 setup.py build -b py3
 
 %check
@@ -81,10 +69,8 @@ export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 py.test-2.7 || :
 %install
-export SOURCE_DATE_EPOCH=1507179684
 rm -rf %{buildroot}
-python2 -tt setup.py build -b py2 install --root=%{buildroot} --force
-python3 -tt setup.py build -b py3 install --root=%{buildroot} --force
+python3 -tt setup.py build -b py3 install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
 echo ----[ mark ]----
@@ -95,10 +81,6 @@ echo ----[ mark ]----
 %files bin
 %defattr(-,root,root,-)
 /usr/bin/sqlformat
-
-%files legacypython
-%defattr(-,root,root,-)
-/usr/lib/python2*/*
 
 %files python
 %defattr(-,root,root,-)
