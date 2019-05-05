@@ -5,39 +5,46 @@
 # Source0 file verified with key 0x6DB3F0E3E0B84F81 (albrecht.andi@gmail.com)
 #
 Name     : sqlparse
-Version  : 0.2.4
-Release  : 47
-URL      : http://pypi.debian.net/sqlparse/sqlparse-0.2.4.tar.gz
-Source0  : http://pypi.debian.net/sqlparse/sqlparse-0.2.4.tar.gz
-Source99 : http://pypi.debian.net/sqlparse/sqlparse-0.2.4.tar.gz.asc
+Version  : 0.3.0
+Release  : 48
+URL      : https://files.pythonhosted.org/packages/63/c8/229dfd2d18663b375975d953e2bdc06d0eed714f93dcb7732f39e349c438/sqlparse-0.3.0.tar.gz
+Source0  : https://files.pythonhosted.org/packages/63/c8/229dfd2d18663b375975d953e2bdc06d0eed714f93dcb7732f39e349c438/sqlparse-0.3.0.tar.gz
+Source99 : https://files.pythonhosted.org/packages/63/c8/229dfd2d18663b375975d953e2bdc06d0eed714f93dcb7732f39e349c438/sqlparse-0.3.0.tar.gz.asc
 Summary  : Non-validating SQL parser
 Group    : Development/Tools
 License  : BSD-3-Clause
-Requires: sqlparse-bin
-Requires: sqlparse-python3
-Requires: sqlparse-python
-BuildRequires : pbr
-BuildRequires : pip
-
-BuildRequires : python3-dev
-BuildRequires : setuptools
+Requires: sqlparse-bin = %{version}-%{release}
+Requires: sqlparse-license = %{version}-%{release}
+Requires: sqlparse-python = %{version}-%{release}
+Requires: sqlparse-python3 = %{version}-%{release}
+BuildRequires : buildreq-distutils3
 
 %description
-``sqlparse`` is a non-validating SQL parser module.
-        It provides support for parsing, splitting and formatting SQL statements.
+python-sqlparse - Parse SQL statements
+======================================
+sqlparse is a non-validating SQL parser module for Python.
 
 %package bin
 Summary: bin components for the sqlparse package.
 Group: Binaries
+Requires: sqlparse-license = %{version}-%{release}
 
 %description bin
 bin components for the sqlparse package.
 
 
+%package license
+Summary: license components for the sqlparse package.
+Group: Default
+
+%description license
+license components for the sqlparse package.
+
+
 %package python
 Summary: python components for the sqlparse package.
 Group: Default
-Requires: sqlparse-python3
+Requires: sqlparse-python3 = %{version}-%{release}
 
 %description python
 python components for the sqlparse package.
@@ -53,15 +60,23 @@ python3 components for the sqlparse package.
 
 
 %prep
-%setup -q -n sqlparse-0.2.4
+%setup -q -n sqlparse-0.3.0
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1523308424
-python3 setup.py build -b py3
+export SOURCE_DATE_EPOCH=1557029252
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
+export MAKEFLAGS=%{?_smp_mflags}
+python3 setup.py build
 
 %check
 export http_proxy=http://127.0.0.1:9/
@@ -69,8 +84,11 @@ export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 py.test-2.7 || :
 %install
+export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
-python3 -tt setup.py build -b py3 install --root=%{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/sqlparse
+cp LICENSE %{buildroot}/usr/share/package-licenses/sqlparse/LICENSE
+python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
 echo ----[ mark ]----
@@ -81,6 +99,10 @@ echo ----[ mark ]----
 %files bin
 %defattr(-,root,root,-)
 /usr/bin/sqlformat
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/sqlparse/LICENSE
 
 %files python
 %defattr(-,root,root,-)
