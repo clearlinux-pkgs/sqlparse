@@ -6,10 +6,10 @@
 #
 Name     : sqlparse
 Version  : 0.3.0
-Release  : 51
+Release  : 52
 URL      : https://files.pythonhosted.org/packages/63/c8/229dfd2d18663b375975d953e2bdc06d0eed714f93dcb7732f39e349c438/sqlparse-0.3.0.tar.gz
 Source0  : https://files.pythonhosted.org/packages/63/c8/229dfd2d18663b375975d953e2bdc06d0eed714f93dcb7732f39e349c438/sqlparse-0.3.0.tar.gz
-Source99 : https://files.pythonhosted.org/packages/63/c8/229dfd2d18663b375975d953e2bdc06d0eed714f93dcb7732f39e349c438/sqlparse-0.3.0.tar.gz.asc
+Source1  : https://files.pythonhosted.org/packages/63/c8/229dfd2d18663b375975d953e2bdc06d0eed714f93dcb7732f39e349c438/sqlparse-0.3.0.tar.gz.asc
 Summary  : Non-validating SQL parser
 Group    : Development/Tools
 License  : BSD-3-Clause
@@ -18,11 +18,56 @@ Requires: sqlparse-license = %{version}-%{release}
 Requires: sqlparse-python = %{version}-%{release}
 Requires: sqlparse-python3 = %{version}-%{release}
 BuildRequires : buildreq-distutils3
+BuildRequires : pytest
 
 %description
-python-sqlparse - Parse SQL statements
-======================================
-sqlparse is a non-validating SQL parser module for Python.
+``sqlparse`` is a non-validating SQL parser module.
+It provides support for parsing, splitting and formatting SQL statements.
+
+Visit the `project page <https://github.com/andialbrecht/sqlparse>`_ for
+additional information and documentation.
+
+**Example Usage**
+
+
+Splitting SQL statements::
+
+   >>> import sqlparse
+   >>> sqlparse.split('select * from foo; select * from bar;')
+   [u'select * from foo; ', u'select * from bar;']
+
+
+Formatting statements::
+
+   >>> sql = 'select * from foo where id in (select id from bar);'
+   >>> print sqlparse.format(sql, reindent=True, keyword_case='upper')
+   SELECT *
+   FROM foo
+   WHERE id IN
+     (SELECT id
+      FROM bar);
+
+
+Parsing::
+
+   >>> sql = 'select * from someschema.mytable where id = 1'
+   >>> res = sqlparse.parse(sql)
+   >>> res
+   (<Statement 'select...' at 0x9ad08ec>,)
+   >>> stmt = res[0]
+   >>> str(stmt)  # converting it back to unicode
+   'select * from someschema.mytable where id = 1'
+   >>> # This is how the internal representation looks like:
+   >>> stmt.tokens
+   (<DML 'select' at 0x9b63c34>,
+    <Whitespace ' ' at 0x9b63e8c>,
+    <Operator '*' at 0x9b63e64>,
+    <Whitespace ' ' at 0x9b63c5c>,
+    <Keyword 'from' at 0x9b63c84>,
+    <Whitespace ' ' at 0x9b63cd4>,
+    <Identifier 'somes...' at 0x9b5c62c>,
+    <Whitespace ' ' at 0x9b63f04>,
+    <Where 'where ...' at 0x9b5caac>)
 
 %package bin
 Summary: bin components for the sqlparse package.
@@ -54,6 +99,7 @@ python components for the sqlparse package.
 Summary: python3 components for the sqlparse package.
 Group: Default
 Requires: python3-core
+Provides: pypi(sqlparse)
 
 %description python3
 python3 components for the sqlparse package.
@@ -61,13 +107,16 @@ python3 components for the sqlparse package.
 
 %prep
 %setup -q -n sqlparse-0.3.0
+cd %{_builddir}/sqlparse-0.3.0
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1557029252
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1582917216
+# -Werror is for werrorists
+export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -82,12 +131,12 @@ python3 setup.py build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-py.test-2.7 || :
+py.test || :
 %install
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/sqlparse
-cp LICENSE %{buildroot}/usr/share/package-licenses/sqlparse/LICENSE
+cp %{_builddir}/sqlparse-0.3.0/LICENSE %{buildroot}/usr/share/package-licenses/sqlparse/c4c4e71afeed48a083c414f8b157f11a3676954a
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
@@ -102,7 +151,7 @@ echo ----[ mark ]----
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/sqlparse/LICENSE
+/usr/share/package-licenses/sqlparse/c4c4e71afeed48a083c414f8b157f11a3676954a
 
 %files python
 %defattr(-,root,root,-)
