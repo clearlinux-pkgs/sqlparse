@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x6DB3F0E3E0B84F81 (albrecht.andi@gmail.com)
 #
 Name     : sqlparse
-Version  : 0.3.0
-Release  : 52
-URL      : https://files.pythonhosted.org/packages/63/c8/229dfd2d18663b375975d953e2bdc06d0eed714f93dcb7732f39e349c438/sqlparse-0.3.0.tar.gz
-Source0  : https://files.pythonhosted.org/packages/63/c8/229dfd2d18663b375975d953e2bdc06d0eed714f93dcb7732f39e349c438/sqlparse-0.3.0.tar.gz
-Source1  : https://files.pythonhosted.org/packages/63/c8/229dfd2d18663b375975d953e2bdc06d0eed714f93dcb7732f39e349c438/sqlparse-0.3.0.tar.gz.asc
+Version  : 0.3.1
+Release  : 53
+URL      : https://files.pythonhosted.org/packages/67/4b/253b6902c1526885af6d361ca8c6b1400292e649f0e9c95ee0d2e8ec8681/sqlparse-0.3.1.tar.gz
+Source0  : https://files.pythonhosted.org/packages/67/4b/253b6902c1526885af6d361ca8c6b1400292e649f0e9c95ee0d2e8ec8681/sqlparse-0.3.1.tar.gz
+Source1  : https://files.pythonhosted.org/packages/67/4b/253b6902c1526885af6d361ca8c6b1400292e649f0e9c95ee0d2e8ec8681/sqlparse-0.3.1.tar.gz.asc
 Summary  : Non-validating SQL parser
 Group    : Development/Tools
 License  : BSD-3-Clause
@@ -40,7 +40,7 @@ Splitting SQL statements::
 Formatting statements::
 
    >>> sql = 'select * from foo where id in (select id from bar);'
-   >>> print sqlparse.format(sql, reindent=True, keyword_case='upper')
+   >>> print(sqlparse.format(sql, reindent=True, keyword_case='upper'))
    SELECT *
    FROM foo
    WHERE id IN
@@ -106,15 +106,15 @@ python3 components for the sqlparse package.
 
 
 %prep
-%setup -q -n sqlparse-0.3.0
-cd %{_builddir}/sqlparse-0.3.0
+%setup -q -n sqlparse-0.3.1
+cd %{_builddir}/sqlparse-0.3.1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1582917216
+export SOURCE_DATE_EPOCH=1583275478
 # -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -136,7 +136,7 @@ py.test || :
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/sqlparse
-cp %{_builddir}/sqlparse-0.3.0/LICENSE %{buildroot}/usr/share/package-licenses/sqlparse/c4c4e71afeed48a083c414f8b157f11a3676954a
+cp %{_builddir}/sqlparse-0.3.1/LICENSE %{buildroot}/usr/share/package-licenses/sqlparse/c4c4e71afeed48a083c414f8b157f11a3676954a
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
