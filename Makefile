@@ -1,5 +1,5 @@
 PKG_NAME := sqlparse
-URL = https://files.pythonhosted.org/packages/67/4b/253b6902c1526885af6d361ca8c6b1400292e649f0e9c95ee0d2e8ec8681/sqlparse-0.3.1.tar.gz
+URL = https://files.pythonhosted.org/packages/a2/54/da10f9a0235681179144a5ca02147428f955745e9393f859dec8d0d05b41/sqlparse-0.4.1.tar.gz
 ARCHIVES = 
 
 include ../common/Makefile.common

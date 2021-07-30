@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x6DB3F0E3E0B84F81 (albrecht.andi@gmail.com)
 #
 Name     : sqlparse
-Version  : 0.3.1
-Release  : 64
-URL      : https://files.pythonhosted.org/packages/67/4b/253b6902c1526885af6d361ca8c6b1400292e649f0e9c95ee0d2e8ec8681/sqlparse-0.3.1.tar.gz
-Source0  : https://files.pythonhosted.org/packages/67/4b/253b6902c1526885af6d361ca8c6b1400292e649f0e9c95ee0d2e8ec8681/sqlparse-0.3.1.tar.gz
-Source1  : https://files.pythonhosted.org/packages/67/4b/253b6902c1526885af6d361ca8c6b1400292e649f0e9c95ee0d2e8ec8681/sqlparse-0.3.1.tar.gz.asc
+Version  : 0.4.1
+Release  : 65
+URL      : https://files.pythonhosted.org/packages/a2/54/da10f9a0235681179144a5ca02147428f955745e9393f859dec8d0d05b41/sqlparse-0.4.1.tar.gz
+Source0  : https://files.pythonhosted.org/packages/a2/54/da10f9a0235681179144a5ca02147428f955745e9393f859dec8d0d05b41/sqlparse-0.4.1.tar.gz
+Source1  : https://files.pythonhosted.org/packages/a2/54/da10f9a0235681179144a5ca02147428f955745e9393f859dec8d0d05b41/sqlparse-0.4.1.tar.gz.asc
 Summary  : A non-validating SQL parser.
 Group    : Development/Tools
 License  : BSD-3-Clause
@@ -21,8 +21,18 @@ BuildRequires : buildreq-distutils3
 BuildRequires : pytest
 
 %description
-``sqlparse`` is a non-validating SQL parser module.
+======================================
+        
+        |buildstatus|_
+        |coverage|_
+        |docs|_
+        
+        .. docincludebegin
+        
+        sqlparse is a non-validating SQL parser for Python.
         It provides support for parsing, splitting and formatting SQL statements.
+        
+        The module is compatible with Python 3.5+ and released under the terms of the
 
 %package bin
 Summary: bin components for the sqlparse package.
@@ -61,23 +71,23 @@ python3 components for the sqlparse package.
 
 
 %prep
-%setup -q -n sqlparse-0.3.1
-cd %{_builddir}/sqlparse-0.3.1
+%setup -q -n sqlparse-0.4.1
+cd %{_builddir}/sqlparse-0.4.1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1603405232
+export SOURCE_DATE_EPOCH=1627689357
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 export MAKEFLAGS=%{?_smp_mflags}
 python3 setup.py build
 
@@ -85,12 +95,12 @@ python3 setup.py build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-py.test || :
+pytest -v || :
 %install
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/sqlparse
-cp %{_builddir}/sqlparse-0.3.1/LICENSE %{buildroot}/usr/share/package-licenses/sqlparse/c4c4e71afeed48a083c414f8b157f11a3676954a
+cp %{_builddir}/sqlparse-0.4.1/LICENSE %{buildroot}/usr/share/package-licenses/sqlparse/c4c4e71afeed48a083c414f8b157f11a3676954a
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
